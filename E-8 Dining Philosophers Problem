@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <pthread.h>
+#include <semaphore.h>
+#include <unistd.h>
+
+sem_t chopstick[5];
+
+void* philosopher(void* num) {
+    int i = (int)num;
+
+    sem_wait(&chopstick[i]);
+    sem_wait(&chopstick[(i + 1) % 5]);
+
+    printf("Philosopher %d is eating\n", i + 1);
+    sleep(1);
+
+    sem_post(&chopstick[i]);
+    sem_post(&chopstick[(i + 1) % 5]);
+
+    printf("Philosopher %d finished eating\n", i + 1);
+    return NULL;
+}
+
+int main() {
+    pthread_t p[5];
+    int i;
+
+    for (i = 0; i < 5; i++)
+        sem_init(&chopstick[i], 0, 1);
+
+    for (i = 0; i < 5; i++)
+        pthread_create(&p[i], NULL, philosopher, (void*)i);
+
+    for (i = 0; i < 5; i++)
+        pthread_join(p[i], NULL);
+
+    return 0;
+}
