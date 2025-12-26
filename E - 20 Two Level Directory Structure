@@ -1,0 +1,36 @@
+#include <stdio.h>
+
+struct user {
+    char uname[20];
+    char fname[10][20];
+    int fcount;
+};
+
+int main() {
+    struct user u[5];
+    int n, i, j;
+
+    printf("Enter number of users: ");
+    scanf("%d", &n);
+
+    for (i = 0; i < n; i++) {
+        printf("Enter user name: ");
+        scanf("%s", u[i].uname);
+
+        printf("Enter number of files: ");
+        scanf("%d", &u[i].fcount);
+
+        printf("Enter file names:\n");
+        for (j = 0; j < u[i].fcount; j++)
+            scanf("%s", u[i].fname[j]);
+    }
+
+    printf("\nDirectory Structure:\n");
+    for (i = 0; i < n; i++) {
+        printf("User %s files:\n", u[i].uname);
+        for (j = 0; j < u[i].fcount; j++)
+            printf("%s\n", u[i].fname[j]);
+    }
+
+    return 0;
+}
